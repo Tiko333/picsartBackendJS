@@ -15,7 +15,9 @@ Promise.all = function (promises) {
                         result.push(message);
                         checkAndResolve(resolve);
                     }
-                ).catch((err) => reject(err))
+                ).catch(err => {
+                    reject(err)
+                })
             } else {
                 result.push(promises[i]);
                 checkAndResolve(resolve);
@@ -64,10 +66,20 @@ Promise.each = function (input, iterator) {
 }
 
 Promise.race = promises => new Promise(((resolve, reject) => {
+    let isFinished = false;
+
     for (let item of promises) {
         item.then(msg => {
+            if (isFinished) {
+                return;
+            }
+            isFinished = true;
             resolve(msg);
         }).catch(err => {
+            if (isFinished) {
+                return ;
+            }
+            isFinished = true;
             reject(err);
         })
     }
@@ -82,7 +94,7 @@ Promise.allSettled = promises => {
         }
     }
 
-    return new Promise(((resolve, reject) => {
+    return new Promise(((resolve) => {
         for (let item of promises) {
             if (item instanceof Promise) {
                 item.then(msg => {
