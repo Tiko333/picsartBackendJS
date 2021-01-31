@@ -120,3 +120,27 @@ Promise.allSettled = promises => {
         }
     }))
 }
+
+Promise.any = function (promises) {
+    let errors = [];
+    let isCompleted = false;
+
+    return new Promise((resolve) => {
+        for (let i = 0; i < promises.length; i++) {
+            if (promises[i] instanceof Promise) {
+                promises[i].then(msg => {
+                    if (isCompleted) {
+                        return;
+                    }
+                    isCompleted = true;
+                    resolve(msg);
+                }).catch(err => {
+                    errors.push(err);
+                    if (i === promises.length - 1) {
+                        resolve(errors)
+                    }
+                })
+            }
+        }
+    })
+}
