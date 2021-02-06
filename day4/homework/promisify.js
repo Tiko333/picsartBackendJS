@@ -1,6 +1,6 @@
 function promisify(callback) {
     return (...callbackArgs) => new Promise((resolve, reject) => {
-        const cb = (err, ...result) => {
+        let cb = (err, ...result) => {
             if (err) {
                 reject(err)
             } else {

@@ -12,7 +12,8 @@ function readDirectories(dir) {
     function makeObject(directory, strings) {
         let res = {};
         for (let item of strings) {
-            if (item.indexOf('.') > 0) {
+            let extension = item.split('.')[1];
+            if (extension === 'txt' || extension === 'js') {
                 res[item] = true;
             } else {
                 let nextDirectory = `${directory}/${item}`;
