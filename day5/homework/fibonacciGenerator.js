@@ -1,15 +1,15 @@
+let fib = function fibonacci(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
 function* fibGenerator(number) {
     let fibonacciArray = [];
 
-    function fibonacci(n) {
-        if (n <= 1) {
-            return 1;
-        }
-        return fibonacci(n - 1) + fibonacci(n - 2);
-    }
-
     for (let i = 1; i < number; i++) {
-        let result = fibonacci(i);
+        let result = fib(i);
         if (result < number) {
             fibonacciArray.push(result);
         } else {
@@ -21,11 +21,11 @@ function* fibGenerator(number) {
 }
 
 
-let fib1 = fibGenerator(21);
-console.log(fib1.next())
-console.log(fib1.next())
-console.log(fib1.next())
-console.log(fib1.next())
-console.log(fib1.next())
-console.log(fib1.next())
+let fibGen = fibGenerator(21);
+console.log(fibGen.next())
+console.log(fibGen.next())
+console.log(fibGen.next())
+console.log(fibGen.next())
+console.log(fibGen.next())
+console.log(fibGen.next())
 
