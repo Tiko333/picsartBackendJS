@@ -1,7 +1,5 @@
-let {Video} = require("./video");
 let {BaseUser} = require('./baseUser');
 let {Post} = require('./post');
-let {Picture} = require('./picture');
 
 class User extends BaseUser {
     constructor(name, age, picture) {
