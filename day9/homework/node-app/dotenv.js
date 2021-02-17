@@ -6,10 +6,19 @@ function config() {
     split.forEach(line => {
         let lineSplit = line.split('=');
         let key = lineSplit[0];
-        let value = lineSplit[1];
+        let value;
+        if (lineSplit.length > 2) {
+            value = lineSplit.slice(1).join('=');
+        } else {
+            value = lineSplit[1];
+        }
         if (key === '') {
             return;
         }
+        if (key.startsWith("#")) {
+            return;
+        }
+
         process.env[key] = value;
     });
 }
