@@ -6,17 +6,19 @@ function Server() {
     this.userService = new UserService();
     this.urlParser = new UrlParser();
     this.port = 3000;
+    this.findByIdRegExp = new RegExp("\/users\/[0-9]+$");
+    this.searchRegExp = new RegExp("\/users\/[a-zA-Z]+$");
+    this.updateRegExp = new RegExp("\/users\/[0-9]+[?][a-zA-Z=0-9&]+$");
 }
 
 Server.prototype.start = function () {
 
     http.createServer((req, res) => {
             let requestMethod = req.method;
-            let parameters = this.urlParser.getParameters(req.url);
 
             if (requestMethod === 'POST') {
-                res.statusCode = 201;
-                if (req.url === '/create') {
+                if (req.url === '/users') {
+                    res.statusCode = 201;
                     createUser.call(this, req, res);
                 }
             }
@@ -26,30 +28,35 @@ Server.prototype.start = function () {
                 if (req.url === '/users') {
                     getAllUsers.call(this, res);
                 }
-
-                let urlWithoutParams = req.url.slice(0, req.url.indexOf('?'));
-                if (urlWithoutParams === '/getById' && parameters.id !== undefined) {
-                    getUserById.call(this, req, res, parameters.id);
+                if (this.findByIdRegExp.test(req.url)) {
+                    let id = +req.url.slice(req.url.lastIndexOf('/') + 1);
+                    getUserById.call(this, req, res, id);
                 }
-                if (urlWithoutParams === '/search' && parameters.firstname !== undefined) {
-                    findByFirstname.call(this, res, parameters);
+                if (this.searchRegExp.test(req.url)) {
+                    let search = req.url.slice(req.url.lastIndexOf('/') + 1);
+                    findByFirstname.call(this, res, search);
                 }
             }
 
             if (requestMethod === 'PUT') {
-                res.statusCode = 200;
-                let urlWithoutParams = req.url.slice(0, req.url.indexOf('?'));
-                if (urlWithoutParams === '/update') {
+                if (this.updateRegExp.test(req.url)) {
+                    let parameters = this.urlParser.getParameters(req.url);
+                    res.statusCode = 200;
                     updateById.call(this, parameters, res);
                 }
             }
 
             if (requestMethod === 'DELETE') {
-                res.statusCode = 204;
-                let urlWithoutParams = req.url.slice(0, req.url.indexOf('?'));
-                if (urlWithoutParams === '/delete') {
-                    deleteUserById.call(this, parameters, res);
+                if (this.findByIdRegExp.test(req.url)) {
+                    let id = +req.url.slice(req.url.lastIndexOf('/') + 1);
+                    res.statusCode = 204;
+                    deleteUserById.call(this, id, res);
                 }
+            }
+
+            if (res.finished === false) {
+                res.statusCode = 404;
+                res.end('404');
             }
         }
     ).listen(this.port);
@@ -70,8 +77,8 @@ Server.prototype.start = function () {
         res.end(JSON.stringify(userById));
     }
 
-    function findByFirstname(res, parameters) {
-        let findByFirstname = this.userService.findByFirstname(parameters.firstname);
+    function findByFirstname(res, search) {
+        let findByFirstname = this.userService.findByFirstname(search);
         res.end(JSON.stringify(findByFirstname));
     }
 
@@ -80,8 +87,8 @@ Server.prototype.start = function () {
         res.end(JSON.stringify(updateUserById));
     }
 
-    function deleteUserById(parameters, res) {
-        this.userService.deleteUserById(parameters.id);
+    function deleteUserById(id, res) {
+        this.userService.deleteUserById(id);
         res.end();
     }
 
