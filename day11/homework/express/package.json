@@ -1,0 +1,12 @@
+{
+  "name": "express",
+  "version": "1.0.0",
+  "description": "express app",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Tigran",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
