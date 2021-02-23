@@ -1,5 +1,6 @@
 /day9/homework/node-app/.env
 node_modules
-/day11/homework/express/package-lock.json
 /day11/homework/express/node_modules
 /package-lock.json
+/day12/homework/node_modules
+/day12/homework/.env
