@@ -3,16 +3,42 @@ const validate = require("../utils/validateUser");
 const users = new Users();
 
 function getAll(req, res) {
-    res.status(200).json(users.getAll());
+    res.status(200).json({
+        status: 'success',
+        code: 200,
+        data: users.getAll(),
+        message: 'users successfully got'
+    });
 }
 
 function getById(req, res) {
-    res.status(200).json(users.getById(+req.params.id));
+    let byId = users.getById(+req.params.id);
+    if (byId !== undefined) {
+        res.status(200).json({
+            status: 'success',
+            code: 200,
+            data: users.getById(+req.params.id),
+            message: `user successfully got by id: ${req.params.id}`
+        });
+    } else {
+        res.status(400).json({
+            status: 'error',
+            code: 400,
+            message: `not found record`,
+            errors: `no user by id: ${req.params.id}`
+        });
+    }
 }
 
 function search(req, res) {
     const {substring} = req.params;
-    res.status(200).json(users.findByFirstname(substring));
+    let findByFirstname = users.findByFirstname(substring);
+    res.status(200).json({
+        status: 'success',
+        code: 200,
+        data: findByFirstname,
+        message: findByFirstname.length > 0 ? `users successfully got by search: ${substring}` : `users not found by search: ${substring}`
+    });
 }
 
 function create(req, res, next) {
@@ -21,18 +47,53 @@ function create(req, res, next) {
         return next(valid);
     }
     users.save(req.body)
-    res.status(201).json(req.body);
+
+    res.status(201).json({
+        status: 'success',
+        code: 201,
+        data: req.body,
+        message: `user successfully created`
+    });
 }
 
 function update(req, res) {
-    const body = req.body;
-    users.updateById(body);
-    res.status(200).json(req.body);
+    let byId = users.getById(+req.body.id);
+    if (byId !== undefined) {
+        const body = req.body;
+        users.updateById(body);
+        res.status(200).json({
+            status: 'success',
+            code: 200,
+            data: req.body,
+            message: `user successfully updated by id: ${req.body.id}`
+        });
+    } else {
+        res.status(400).json({
+            status: 'error',
+            code: 400,
+            message: `not found record`,
+            errors: `no user by id: ${req.body.id}`
+        });
+    }
 }
 
 function deleteById(req, res) {
-    users.deleteById(+req.params.id)
-    res.status(204).end();
+    let byId = users.getById(+req.params.id);
+    if (byId !== undefined) {
+        users.deleteById(+req.params.id)
+        res.status(200).json({
+            status: 'success',
+            code: 200,
+            message: `user successfully deleted by id: ${req.params.id}`
+        });
+    } else {
+        res.status(400).json({
+            status: 'error',
+            code: 400,
+            message: `not found record`,
+            errors: `no user by id: ${req.params.id}`
+        });
+    }
 }
 
 module.exports = {

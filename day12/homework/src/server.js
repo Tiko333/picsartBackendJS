@@ -8,7 +8,12 @@ server.use(express.json());
 server.use(usersRoutes);
 
 server.use((req, res, next) => {
-    res.json({error: 404})
+    res.json({
+        status: 'error',
+        code: 400,
+        message: 'not found record',
+        errors: `no such endpoint for method: ${req.method} ${req.path}`
+    })
 })
 
 server.listen(configs.PORT, () => {

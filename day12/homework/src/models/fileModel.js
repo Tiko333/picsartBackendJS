@@ -57,33 +57,34 @@ FileModel.prototype.findUsersByFirstname = function (firstname) {
 FileModel.prototype.updateUserById = function (parameters) {
     let userById = this.getUserById(+parameters.id);
 
-    for (let parametersKey in parameters) {
-        if (parametersKey === 'id') {
-            continue;
-        }
-        userById[parametersKey] = parameters[parametersKey];
-    }
-
-    let usersText1 = fs.readFileSync(path).toString();
-    let strings = usersText1.split('\n');
-    let res = '';
-    for (const string of strings) {
-        let currentId = +string.slice(string.indexOf(':') + 2, 8);
-        if (currentId === +parameters.id) {
-            let removedUsersText1 = usersText1.replace(string, JSON.stringify(userById));
-            let removedUsersText1Split = removedUsersText1.split('\n');
-            for (let string1 of removedUsersText1Split) {
-                if (string1.length !== 0) {
-                    res += string1 + '\n';
-                }
+    if (userById !== undefined) {
+        for (let parametersKey in parameters) {
+            if (parametersKey === 'id') {
+                continue;
             }
-            break;
+            userById[parametersKey] = parameters[parametersKey];
         }
-    }
-    fs.writeFile(path, res, (err) => {
-        console.log(err ? err : 'user updated');
-    });
 
+        let usersText1 = fs.readFileSync(path).toString();
+        let strings = usersText1.split('\n');
+        let res = '';
+        for (const string of strings) {
+            let currentId = +string.slice(string.indexOf(':') + 2, 8);
+            if (currentId === +parameters.id) {
+                let removedUsersText1 = usersText1.replace(string, JSON.stringify(userById));
+                let removedUsersText1Split = removedUsersText1.split('\n');
+                for (let string1 of removedUsersText1Split) {
+                    if (string1.length !== 0) {
+                        res += string1 + '\n';
+                    }
+                }
+                break;
+            }
+        }
+        fs.writeFile(path, res, (err) => {
+            console.log(err ? err : 'user updated');
+        });
+    }
 }
 
 FileModel.prototype.deleteUserById = function (id) {
