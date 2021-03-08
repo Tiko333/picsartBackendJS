@@ -1,0 +1,60 @@
+Scripts:
+    'npm start' prod mode
+    'npm run dev' dev mode
+
+ENV variables:
+    PORT (default 3000)
+    DB_URL - mongodb url
+    JWT_SECRET_KEY
+
+Users endpoints:
+
+No auth:
+    POST /register - register a user
+        form-data
+            name - text
+            email - text
+            password - text
+            avatar - file
+    POST /login - login user
+        raw json
+            email - text
+            password - text
+Use auth:
+    DELETE /users/{id} - delete user
+    PATCH /users/{id} - update user
+        raw json
+            name - text
+            password - text
+    GET /users - get users
+    GET /users/{id} - get user by id
+    GET /users/search/{text} - search user by name
+
+Blog endpoints:
+
+No auth:
+    GET /blog/news - get posts
+Use auth:
+    POST /blog - create a post
+        form-data
+            authorId - text
+            title - text
+            text - text
+            photos - files
+            description - text
+    PATCH /blog/{id} - update the post
+        raw json
+            title - text
+            text - text
+            description - text
+    PATCH /blog/photos/{id} - add photo to post
+        form-data
+            photos - files
+    PATCH /blog/likes/{id} - add like to post
+    DELETE /blog/{id} - delete a post
+    GET /blog/user/{id} - get posts by user id
+    GET /blog/newest/{limit} - get newest posts by limit
+    GET /blog/search/{text} - search post by description
+    GET /blog/photos/{id} - get post's photos by post id
+    GET /blog/{id} - get post by post id
+    GET /blog/top/{limit} - get posts by rating by limit

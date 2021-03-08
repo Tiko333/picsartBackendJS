@@ -4,3 +4,6 @@ node_modules
 /package-lock.json
 /day12/homework/node_modules
 /day12/homework/.env
+/day13/homework/.env
+/day13/homework/node_modules
+/day13/homework/.gitignore
