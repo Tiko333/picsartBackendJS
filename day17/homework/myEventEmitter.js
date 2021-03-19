@@ -106,14 +106,6 @@ MyEventEmitter.prototype.listeners = function (eventName) {
     return this.eventMap.get(eventName).listeners;
 }
 
-MyEventEmitter.prototype.listenerCount = function (eventEmitterName, eventName) {
-    if (!eventEmitterName.eventMap.has(eventName)) {
-        throw new Error(`event by name: '${eventName}' doesn't exits`);
-    }
-
-    return eventEmitterName.eventMap.get(eventName).listeners.length;
-}
-
 MyEventEmitter.prototype.emit = function (eventName, ...eventNames) {
     let result = false;
     eventNames.unshift(eventName);
@@ -136,4 +128,12 @@ MyEventEmitter.prototype.emit = function (eventName, ...eventNames) {
     });
 
     return result;
+}
+
+MyEventEmitter.listenerCount = function (eventEmitterName, eventName) {
+    if (!eventEmitterName.eventMap.has(eventName)) {
+        throw new Error(`event by name: '${eventName}' doesn't exits`);
+    }
+
+    return eventEmitterName.eventMap.get(eventName).listeners.length;
 }
