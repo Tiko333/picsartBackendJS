@@ -1,0 +1,26 @@
+{
+  "name": "repos",
+  "version": "1.0.0",
+  "description": "Repositories app",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon src/server.js",
+    "start": "NODE_ENV=development node src/server.js",
+    "collect:repositories": "NODE_ENV=development node ./src/_scripts/collect-repositories.js"
+  },
+  "keywords": [],
+  "author": "Tigran Galstyan",
+  "license": "ISC",
+  "dependencies": {
+    "async-redis": "^1.1.7",
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.1",
+    "random-words": "^1.1.1",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.7"
+  }
+}

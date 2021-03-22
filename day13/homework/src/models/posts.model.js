@@ -36,7 +36,6 @@ const save = async (req) => {
             result.isCreated = true;
             return result;
         }
-        Vles
     } else {
         let path = '';
         if (req.body.files) {

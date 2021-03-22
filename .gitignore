@@ -7,3 +7,6 @@ node_modules
 /day13/homework/.env
 /day13/homework/node_modules
 /day13/homework/.gitignore
+/day18/homework/repositories/node_modules
+/day18/homework/repositories/.env
+/day18/homework/repositories/.gitignore
