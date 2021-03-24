@@ -1,0 +1,13 @@
+Scripts:
+     dev: dev mode
+     start: prod mode
+     collect:repositories: collecting repos from github api and saving to mongo
+
+ENV variables:
+    PORT: (default 3000)
+    DB_URL: mongodb url
+    GITHUB_URL: github api url
+
+Repository endpoints:
+    GET /repos/count - gets repositories count
+    GET /repos - gets repositories

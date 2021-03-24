@@ -10,3 +10,6 @@ node_modules
 /day18/homework/repositories/node_modules
 /day18/homework/repositories/.env
 /day18/homework/repositories/.gitignore
+/day18/homework/repositories-caching/.gitignore
+/day19/homework/node_modules
+/day19/homework/.gitignore

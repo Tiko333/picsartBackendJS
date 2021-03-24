@@ -6,14 +6,14 @@ const publisher = redis.createClient();
 
 // saves repositories into mongoDB and publishing 'repositories'
 exports.saveRepos = async function (mappedRepos) {
-    await model.create(mappedRepos).then(result => {
-        console.log('added repositories to mongoDB')
-        publisher.publish('repositories', `${result.length}`);
-    })
+    const documentPromise = await model.create(mappedRepos);
+    console.log('added repositories to mongoDB');
+    publisher.publish('repositories', `${documentPromise.length}`);
+    publisher.publish('saveRepos', `${documentPromise.length}`);
 }
 
 // gets repositories from GitHub API by using Axios
-exports.getRepos = async function () {
+exports.getReposFromGitHub = async function () {
     const repos = await axios.get(`${process.env.GITHUB_URL}${random(1)}`);
     return repos;
 }
@@ -54,4 +54,10 @@ exports.processRepos = function (repos) {
 exports.getReposCount = async function () {
     const count = await model.countDocuments();
     return count;
+}
+
+// gets repositories from MongoDB
+exports.getRepos = async function () {
+    const repositories = await model.find();
+    return repositories;
 }

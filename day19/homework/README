@@ -1,0 +1,6 @@
+Scripts:
+     dev: dev mode
+     start: prod mode
+
+Repository endpoints:
+    GET /public - gets static files
